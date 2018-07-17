@@ -2,22 +2,20 @@
   "name": "spp science",
   "description": "class selector",
   "version": "1.0.0",
-  "author": "Samay Shamdaani <techboss302@gmail.com>",
+  "author": "Samay Shamdasani <techboss302@gmail.com>",
   "dependencies": {
     "gatsby": "^1.9.273",
     "gatsby-link": "^1.6.40",
     "gatsby-plugin-react-helmet": "^2.0.10",
-    "gatsby-plugin-react-next": "^1.0.11",
     "react-grid-system": "^4.1.4",
     "react-helmet": "^5.2.0",
     "styled-components": "^3.3.3"
   },
-  "keywords": [
-    "gatsby"
-  ],
+  "keywords": ["gatsby"],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build":
+      "npm i gatsby gatsby-link gatsby-plugin-react-helmet react-grid-system react-helmet styled-components && gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write 'src/**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
