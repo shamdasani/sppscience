@@ -15,10 +15,13 @@ const Highlight = styled.span`
   display: inline-block;
   padding: 5px;
   margin: 10px;
+  border-radius: 5px;
   font-size: 20px;
+  transition: all 300ms ease;
 
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
 `
 const YearsContainer = styled.div`
@@ -97,7 +100,7 @@ class DragDrop extends React.Component {
         {
           no: 3,
           text: 'Advanced Biology',
-          type: 'honors',
+          type: 'advanced',
           tier: '2',
           regularGrade: 'passing',
           honors: 'passing',
@@ -123,8 +126,8 @@ class DragDrop extends React.Component {
         },
         {
           no: 6,
-          text: 'Advanced Chemistry ',
-          type: 'honors',
+          text: 'Advanced Chemistry',
+          type: 'advanced',
           tier: '2',
           regularGrade: 'passing',
           honors: 'passing',
@@ -150,7 +153,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 9,
-          text: 'Anatomy ',
+          text: 'Anatomy',
           type: 'reg',
           tier: '2',
           regularGrade: 'passing',
@@ -159,7 +162,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 10,
-          text: 'Forensics ',
+          text: 'Forensics',
           type: 'reg',
           tier: '2',
           regularGrade: 'passing',
@@ -168,7 +171,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 11,
-          text: 'AP Environmental Science ',
+          text: 'AP Environmental Science',
           type: 'AP',
           tier: '1',
           regularGrade: 'A+',
@@ -177,7 +180,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 12,
-          text: 'AP Biology ',
+          text: 'AP Biology',
           type: 'AP',
           tier: '1',
           regularGrade: 'A+',
@@ -186,7 +189,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 13,
-          text: 'AP Chemistry ',
+          text: 'AP Chemistry',
           type: 'AP',
           tier: '1',
           regularGrade: 'A+',
@@ -195,7 +198,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 14,
-          text: 'AP Physics ',
+          text: 'AP Physics',
           type: 'AP',
           tier: '2',
           regularGrade: 'A+',
@@ -246,20 +249,19 @@ class DragDrop extends React.Component {
     let data = e.dataTransfer.getData('text/plain')
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
-    if (object.tier === '1' || this.state.freshman[0] === 'Chemistry Honors') {
-      let { sophomore } = this.state
-      sophomore.push(object)
-      this.setState({ sophomore })
-      if (this.state.freshman[0].text === 'Chemistry Honors') {
+    console.log(object)
+    if (object.tier === '1') {
+      if (
+        object.text === 'AP Chemistry' &&
+        this.state.freshman[0] != 'Chemistry Honors'
+      ) {
         alert(
-          'You need a minimum grade of ' +
-            object.honors +
-            ' in ' +
-            this.state.freshman[0] +
-            ' to take ' +
-            this.state.sophomore[0].text
+          'You must take Chemistry (A+) or Chemistry Honors (B+) first to take AP Chemistry.'
         )
       } else {
+        let { sophomore } = this.state
+        sophomore.push(object)
+        this.setState({ sophomore })
         alert(
           'You need a minimum grade of ' +
             object.regularGrade +
@@ -282,16 +284,20 @@ class DragDrop extends React.Component {
     let data = e.dataTransfer.getData('text/plain')
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
-    console.log(object)
-    if (
-      object.tier === '1' ||
-      this.state.freshman[0].tier === '1' ||
-      this.state.sophomore[0].tier === '1'
-    ) {
-      let { junior } = this.state
-      junior.push(object)
-      this.setState({ junior })
-      if (this.state.sophomore[0].type === 'reg') {
+
+    if (object.type === 'advanced') {
+      if (
+        this.state.freshman[0].text === 'Chemistry Honors' ||
+        this.state.sophomore[0].text === 'Biology' ||
+        this.state.sophomore[0].text === 'Biology Honors' ||
+        this.state.sophomore[0].text === 'Chemistry' ||
+        this.state.sophomore[0].text === 'Chemistry Honors' ||
+        this.state.sophomore[0].text === 'AP Chemistry' ||
+        this.state.sophomore[0].text === 'AP Biology'
+      ) {
+        let { junior } = this.state
+        junior.push(object)
+        this.setState({ junior })
         alert(
           'You need a minimum grade of ' +
             object.regularGrade +
@@ -301,31 +307,96 @@ class DragDrop extends React.Component {
             this.state.junior[0].text +
             '.'
         )
-      } else if (this.state.sophomore[0].type === 'honors') {
+      } else {
+        alert(
+          'You must take a Biology or Chemistry course before taking an advanced class.'
+        )
+      }
+    } else if (object.no === 10) {
+      let bioSubstring = 'logy'
+      let chemSubstring = 'istry'
+      let sophomoreText = this.state.sophomore[0].text
+      let freshmanText = this.state.freshman[0]
+      if (
+        sophomoreText.indexOf(bioSubstring) !== -1 &&
+        freshmanText.indexOf(chemSubstring) !== -1
+      ) {
+        let { junior } = this.state
+        junior.push(object)
+        this.setState({ junior })
         alert(
           'You need a minimum grade of ' +
-            object.honors +
+            object.regularGrade +
             ' in ' +
-            this.state.sophomore[0].text +
+            sophomoreText +
             ' to take ' +
             this.state.junior[0].text +
             '.'
         )
       } else {
         alert(
-          'You need a minimum grade of ' +
-            object.AP +
-            ' in ' +
-            this.state.sophomore[0].text +
-            ' to take ' +
-            this.state.junior[0].text +
-            '.'
+          'You must take a Chemistry and Biology course before you take Forensics.'
         )
       }
-    } else {
-      alert(
-        'You cannot take this course before taking a Tier A Course (Chemistry, Chemistry Honors, AP Chemistry, Biology, Biology Honors, AP Biology, AP Environmental Science)'
-      )
+    }
+
+    if (
+      (object.tier === '1' &&
+        object.type != 'advanced' &&
+        object.text != 'Forensics') ||
+      (this.state.sophomore[0].tier === '1' &&
+        object.type != 'advanced' &&
+        object.text != 'Forensics')
+    ) {
+      if (
+        object.text === 'AP Chemistry' &&
+        this.state.sophomore[0].text != 'Chemistry Honors' &&
+        this.state.sophomore[0].text != 'Chemistry' &&
+        this.state.freshman[0].text != 'Chemistry Honors'
+      ) {
+        alert(
+          'You must take Chemistry (A+) or Chemistry Honors (B+) first to take AP Chemistry.'
+        )
+      } else {
+        let { junior } = this.state
+        junior.push(object)
+        this.setState({ junior })
+        if (this.state.sophomore[0].type === 'reg') {
+          alert(
+            'You need a minimum grade of ' +
+              object.regularGrade +
+              ' in ' +
+              this.state.sophomore[0].text +
+              ' to take ' +
+              this.state.junior[0].text +
+              '.'
+          )
+        } else if (this.state.sophomore[0].type === 'honors') {
+          alert(
+            'You need a minimum grade of ' +
+              object.honors +
+              ' in ' +
+              this.state.sophomore[0].text +
+              ' to take ' +
+              this.state.junior[0].text +
+              '.'
+          )
+        } else if (this.state.sophomore[0].type === 'AP') {
+          alert(
+            'You need a minimum grade of ' +
+              object.AP +
+              ' in ' +
+              this.state.sophomore[0].text +
+              ' to take ' +
+              this.state.junior[0].text +
+              '.'
+          )
+        } else {
+          alert(
+            'You cannot take this course before taking a Tier A Course (Chemistry, Chemistry Honors, AP Chemistry, Biology, Biology Honors, AP Biology, AP Environmental Science)'
+          )
+        }
+      }
     }
   }
 
@@ -335,12 +406,41 @@ class DragDrop extends React.Component {
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
     console.log(object)
-    if (
-      object.tier === '1' ||
-      this.state.freshman[0].tier === '1' ||
-      this.state.sophomore[0].tier === '1' ||
-      this.state.junior[0].tier === '1'
-    ) {
+
+    if (object.no === 10) {
+      let bioSubstring = 'logy'
+      let chemSubstring = 'istry'
+      let sophomoreText = this.state.sophomore[0].text
+      let freshmanText = this.state.freshman[0]
+      let juniorText = this.state.sophomore[0].text
+      if (
+        (sophomoreText.indexOf(bioSubstring) !== -1 &&
+          freshmanText.indexOf(chemSubstring) !== -1) ||
+        (juniorText.indexOf(bioSubstring) !== -1 &&
+          freshmanText.indexOf(chemSubstring) !== -1) ||
+        (juniorText.indexOf(bioSubstring) !== -1 &&
+          sophomoreText.indexOf(chemSubstring) !== -1) ||
+        (sophomoreText.indexOf(bioSubstring) !== -1 &&
+          juniorText.indexOf(chemSubstring) !== -1)
+      ) {
+        let { senior } = this.state
+        senior.push(object)
+        this.setState({ senior })
+        alert(
+          'You need a minimum grade of ' +
+            object.regularGrade +
+            ' in ' +
+            this.state.sophomore[0].text +
+            ' to take ' +
+            this.state.junior[0].text +
+            '.'
+        )
+      } else {
+        alert(
+          'You must take a Chemistry and Biology course before you take Forensics.'
+        )
+      }
+    } else if (object.text != 'Forensics') {
       let { senior } = this.state
       senior.push(object)
       this.setState({ senior })
