@@ -258,6 +258,19 @@ class DragDrop extends React.Component {
         alert(
           'You must take Chemistry (A+) or Chemistry Honors (B+) first to take AP Chemistry.'
         )
+      } else if (
+        object.text === 'AP Chemistry' &&
+        this.state.freshman[0] === 'Chemistry Honors'
+      ) {
+        alert(
+          'You need a minimum grade of ' +
+            object.honors +
+            ' in ' +
+            this.state.freshman[0] +
+            ' to take ' +
+            this.state.sophomore[0].text +
+            '.'
+        )
       } else {
         let { sophomore } = this.state
         sophomore.push(object)
