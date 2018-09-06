@@ -99,7 +99,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 3,
-          text: 'Advanced Biology',
+          text: 'Advanced Biology II',
           type: 'advanced',
           tier: '2',
           regularGrade: 'passing',
@@ -126,7 +126,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 6,
-          text: 'Advanced Chemistry',
+          text: 'Advanced Chemistry II',
           type: 'advanced',
           tier: '2',
           regularGrade: 'passing',
@@ -153,7 +153,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 9,
-          text: 'Anatomy',
+          text: 'Anatomy & Physiology',
           type: 'reg',
           tier: '2',
           regularGrade: 'passing',
@@ -162,7 +162,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 10,
-          text: 'Forensics',
+          text: 'Forensic Science',
           type: 'reg',
           tier: '2',
           regularGrade: 'passing',
@@ -198,7 +198,7 @@ class DragDrop extends React.Component {
         },
         {
           no: 14,
-          text: 'AP Physics',
+          text: 'AP Physics I',
           type: 'AP',
           tier: '2',
           regularGrade: 'A+',
@@ -262,6 +262,9 @@ class DragDrop extends React.Component {
         object.text === 'AP Chemistry' &&
         this.state.freshman[0] === 'Chemistry Honors'
       ) {
+        let { sophomore } = this.state
+        sophomore.push(object)
+        this.setState({ sophomore })
         alert(
           'You need a minimum grade of ' +
             object.honors +
@@ -348,7 +351,7 @@ class DragDrop extends React.Component {
         )
       } else {
         alert(
-          'You must take a Chemistry and Biology course before you take Forensics.'
+          'You must take a Chemistry and Biology course before you take Forensic Science.'
         )
       }
     }
@@ -356,10 +359,10 @@ class DragDrop extends React.Component {
     if (
       (object.tier === '1' &&
         object.type != 'advanced' &&
-        object.text != 'Forensics') ||
+        object.text != 'Forensic Science') ||
       (this.state.sophomore[0].tier === '1' &&
         object.type != 'advanced' &&
-        object.text != 'Forensics')
+        object.text != 'Forensic Science')
     ) {
       if (
         object.text === 'AP Chemistry' &&
@@ -419,13 +422,12 @@ class DragDrop extends React.Component {
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
     console.log(object)
-
     if (object.no === 10) {
       let bioSubstring = 'logy'
       let chemSubstring = 'istry'
       let sophomoreText = this.state.sophomore[0].text
       let freshmanText = this.state.freshman[0]
-      let juniorText = this.state.sophomore[0].text
+      let juniorText = this.state.junior[0].text
       if (
         (sophomoreText.indexOf(bioSubstring) !== -1 &&
           freshmanText.indexOf(chemSubstring) !== -1) ||
@@ -443,17 +445,17 @@ class DragDrop extends React.Component {
           'You need a minimum grade of ' +
             object.regularGrade +
             ' in ' +
-            this.state.sophomore[0].text +
-            ' to take ' +
             this.state.junior[0].text +
+            ' to take ' +
+            this.state.senior[0].text +
             '.'
         )
       } else {
         alert(
-          'You must take a Chemistry and Biology course before you take Forensics.'
+          'You must take a Chemistry and Biology course before you take Forensic Science.'
         )
       }
-    } else if (object.text != 'Forensics') {
+    } else {
       let { senior } = this.state
       senior.push(object)
       this.setState({ senior })
@@ -488,10 +490,6 @@ class DragDrop extends React.Component {
             '.'
         )
       }
-    } else {
-      alert(
-        'You cannot take this course before taking a Tier A Course (Chemistry, Chemistry Honors, AP Chemistry, Biology, Biology Honors, AP Biology, AP Environmental Science)'
-      )
     }
   }
 
@@ -530,8 +528,8 @@ class DragDrop extends React.Component {
           <p>
             {' '}
             You must take at least at least one life science (Biology,
-            Environmental Science, Forensics, Anatomy) and one physical science
-            (Physical Science, Chemistry, Physics).{' '}
+            Environmental Science, Forensic Science, Anatomy & Physiology) and
+            one physical science (Physical Science, Chemistry, Physics).{' '}
           </p>
           {classes.map(item => {
             return (
