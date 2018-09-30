@@ -14,7 +14,7 @@ const Highlight = styled.span`
   color: #fff;
   display: inline-block;
   padding: 5px;
-  margin: 10px;
+  margin: 12px;
   border-radius: 5px;
   font-size: 20px;
   transition: all 300ms ease;
@@ -303,6 +303,29 @@ class DragDrop extends React.Component {
 
     if (object.type === 'advanced') {
       if (
+        object.text === 'Advanced Chemistry II' &&
+        this.state.sophomore[0].text === 'AP Chemistry'
+      ) {
+        alert('You cannot take an advanced and AP class in the same subject.')
+      } else if (
+        object.text === 'Advanced Chemistry II' &&
+        this.state.sophomore[0].text != 'Chemistry Honors' &&
+        this.state.sophomore[0].text != 'Chemistry' &&
+        this.state.freshman[0].text != 'Chemistry Honors' &&
+        this.state.sophomore[0].text != 'AP Chemistry'
+      ) {
+        alert(
+          'You must take Chemistry or Chemistry Honors first to take Advanced Chemistry II.'
+        )
+      } else if (
+        object.text === 'Advanced Biology II' &&
+        this.state.sophomore[0].text != 'Biology Honors' &&
+        this.state.sophomore[0].text != 'Biology'
+      ) {
+        alert(
+          'You must take Biology or Biology Honors first to take Advanced Biology II.'
+        )
+      } else if (
         this.state.freshman[0].text === 'Chemistry Honors' ||
         this.state.sophomore[0].text === 'Biology' ||
         this.state.sophomore[0].text === 'Biology Honors' ||
@@ -373,10 +396,22 @@ class DragDrop extends React.Component {
         alert(
           'You must take Chemistry (A+) or Chemistry Honors (B+) first to take AP Chemistry.'
         )
+      } else if (
+        (object.text === 'Biology Honors' &&
+          this.state.sophomore[0].text === 'Biology') ||
+        (object.text === 'Biology' &&
+          this.state.sophomore[0].text === 'Biology Honors') ||
+        (object.text === 'Chemistry Honors' &&
+          this.state.sophomore[0].text === 'Chemistry') ||
+        (object.text === 'Chemistry' &&
+          this.state.sophomore[0].text === 'Chemistry Honors')
+      ) {
+        alert('You have already taken this subject.')
       } else {
         let { junior } = this.state
         junior.push(object)
         this.setState({ junior })
+
         if (this.state.sophomore[0].type === 'reg') {
           alert(
             'You need a minimum grade of ' +
@@ -422,7 +457,75 @@ class DragDrop extends React.Component {
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
     console.log(object)
-    if (object.no === 10) {
+    if (
+      object.text === 'Advanced Chemistry II' &&
+      this.state.junior[0].text != 'Chemistry' &&
+      this.state.junior[0].text != 'Chemistry Honors' &&
+      this.state.sophomore[0].text != 'Chemistry Honors' &&
+      this.state.sophomore[0].text != 'AP Chemistry' &&
+      this.state.sophomore[0].text != 'Chemistry' &&
+      this.state.freshman[0].text != 'Chemistry Honors'
+    ) {
+      alert(
+        'You must take Chemistry or Chemistry Honors first to take Advanced Chemistry II.'
+      )
+    } else if (
+      (object.text === 'Biology Honors' &&
+        this.state.sophomore[0].text === 'Biology') ||
+      (object.text === 'Biology' &&
+        this.state.sophomore[0].text === 'Biology Honors') ||
+      (object.text === 'Chemistry Honors' &&
+        this.state.sophomore[0].text === 'Chemistry') ||
+      (object.text === 'Chemistry' &&
+        this.state.sophomore[0].text === 'Chemistry Honors') ||
+      (object.text === 'Biology Honors' &&
+        this.state.junior[0].text === 'Biology') ||
+      (object.text === 'Biology' &&
+        this.state.junior[0].text === 'Biology Honors') ||
+      (object.text === 'Chemistry Honors' &&
+        this.state.junior[0].text === 'Chemistry') ||
+      (object.text === 'Chemistry' &&
+        this.state.junior[0].text === 'Chemistry Honors') ||
+      (object.text === 'AP Physics I' &&
+        this.state.junior[0].text === 'Physics I Honors') ||
+      (object.text === 'AP Physics I' &&
+        this.state.junior[0].text === 'Physics I') ||
+      (object.text === 'Physics I Honors' &&
+        this.state.junior[0].text === 'Physics I') ||
+      (object.text === 'Physics I Honors' &&
+        this.state.junior[0].text === 'AP Physics I') ||
+      (object.text === 'Physics I' &&
+        this.state.junior[0].text === 'AP Physics ') ||
+      (object.text === 'Physics I' &&
+        this.state.junior[0].text === 'Physics I Honors')
+    ) {
+      alert('You have already taken this subject.')
+    } else if (
+      object.text === 'Advanced Biology II' &&
+      this.state.junior[0].text != 'Biology' &&
+      this.state.junior[0].text != 'Biology Honors' &&
+      this.state.sophomore[0].text != 'Biology Honors' &&
+      this.state.sophomore[0].text != 'Biology'
+    ) {
+      alert(
+        'You must take Biology or Biology Honors first to take Advanced Biology II.'
+      )
+    } else if (
+      (object.text === 'AP Biology' &&
+        this.state.junior[0].text === 'Advanced Biology II') ||
+      (object.text === 'Advanced Biology II' &&
+        this.state.junior[0].text === 'AP Biology') ||
+      (object.text === 'Advanced Biology II' &&
+        this.state.sophomore[0].text === 'AP Biology') ||
+      (object.text === 'AP Chemistry' &&
+        this.state.junior[0].text === 'Advanced Chemistry II') ||
+      (object.text === 'Advanced Chemistry II' &&
+        this.state.junior[0].text === 'AP Chemistry') ||
+      (object.text === 'Advanced Chemistry II' &&
+        this.state.sophomore[0].text === 'AP Chemistry')
+    ) {
+      alert('You cannot take an advanced and AP class in the same subject.')
+    } else if (object.no === 10) {
       let bioSubstring = 'logy'
       let chemSubstring = 'istry'
       let sophomoreText = this.state.sophomore[0].text
