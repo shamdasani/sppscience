@@ -1,10 +1,10 @@
 {
-  "name": "spp science",
+  "name": "spp-science",
   "description": "class selector",
   "version": "1.0.0",
   "author": "Samay Shamdasani <techboss302@gmail.com>",
   "dependencies": {
-    "gatsby": "^2.0",
+    "gatsby": "^1.9.273",
     "gatsby-link": "^1.6.40",
     "gatsby-plugin-react-helmet": "^2.0.10",
     "gatsby-plugin-react-next": "^1.0.11",
