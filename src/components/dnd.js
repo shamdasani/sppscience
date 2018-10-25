@@ -42,7 +42,7 @@ const Button = styled.button`
   display: inline;
   &:hover {
     background: #fff;
-    border: 3px solid #438cee;
+    border: 3px solid #ba4646;
     color: #333;
     transition: all 300ms ease;
     cursor: pointer;
@@ -250,7 +250,7 @@ class DragDrop extends React.Component {
     let index = e.dataTransfer.getData('integer')
     let object = this.state.classes[Object.keys(this.state.classes)[index]]
     console.log(object)
-    if (object.tier === '1') {
+    if (object.tier === '1' || this.state.freshman[0] === 'Chemistry Honors') {
       if (
         object.text === 'AP Chemistry' &&
         this.state.freshman[0] != 'Chemistry Honors'
@@ -259,7 +259,7 @@ class DragDrop extends React.Component {
           'You must take Chemistry (A+) or Chemistry Honors (B+) first to take AP Chemistry.'
         )
       } else if (
-        object.text === 'AP Chemistry' &&
+        // object.text === 'AP Chemistry' &&
         this.state.freshman[0] === 'Chemistry Honors'
       ) {
         let { sophomore } = this.state
